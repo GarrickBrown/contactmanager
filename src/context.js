@@ -9,13 +9,12 @@ const reducer = (state, action) => {
 				...state,
 				contacts: state.contacts.filter(contact => contact.id !== action.payload),
 			};
-		/* 		case 'ADD_CONTACT':
-			const newContacts = state.contacts.push(action.payload);
+		case 'ADD_CONTACT':
 			return {
 				...state,
-				contacts: newContacts,
+				contacts: [action.payload, ...state.contacts],
 			};
- */ default:
+		default:
 			return state;
 	}
 };
