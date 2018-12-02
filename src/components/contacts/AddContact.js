@@ -30,23 +30,23 @@ class AddContact extends Component {
 		};
 
 		// Check for errors
-		if (name === '') {
-			this.setState({
-				errors: { name: 'Name is required' },
-			});
-			return;
-		}
+		if (name === '' || email === '' || phone === '') {
+			let errorList = {};
 
-		if (email === '') {
-			this.setState({
-				errors: { email: 'Email is required' },
-			});
-			return;
-		}
+			if (name === '') {
+				errorList = { ...errorList, name: 'Name is required' };
+			}
 
-		if (phone === '') {
+			if (email === '') {
+				errorList = { ...errorList, email: 'Email is required' };
+			}
+
+			if (phone === '') {
+				errorList = { ...errorList, phone: 'Phone is required' };
+			}
+
 			this.setState({
-				errors: { phone: 'Phone is required' },
+				errors: errorList,
 			});
 			return;
 		}
@@ -61,6 +61,9 @@ class AddContact extends Component {
 			phone: '',
 			errors: {},
 		});
+
+		// Redirect to home page
+		this.props.history.push('/');
 	};
 
 	render() {
