@@ -18,7 +18,7 @@ class AddContact extends Component {
 		});
 	};
 
-	handleSubmit = (dispatch, event) => {
+	handleSubmit = async (dispatch, event) => {
 		event.preventDefault();
 
 		// Create contact from state
@@ -53,9 +53,12 @@ class AddContact extends Component {
 		}
 
 		// Add contact to context API
-		this.addContact(newContact).then(res => {
+		try {
+			const res = await axios.post(`https://jsonplaceholder.typicode.com/users/`, newContact);
 			dispatch({ type: 'ADD_CONTACT', payload: res.data });
-		});
+		} catch (error) {
+			console.log(error);
+		}
 
 		// Clear state to clear form
 		this.setState({
@@ -67,15 +70,6 @@ class AddContact extends Component {
 
 		// Redirect to home page
 		this.props.history.push('/');
-	};
-
-	addContact = async contactInfo => {
-		try {
-			const res = await axios.post(`https://jsonplaceholder.typicode.com/users/`, contactInfo);
-			return res;
-		} catch (error) {
-			console.log(error);
-		}
 	};
 
 	render() {
