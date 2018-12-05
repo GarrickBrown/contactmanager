@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Consumer } from '../../context';
 import TextInputGroup from '../layout/TextInputGroup';
-import uuid from 'uuid';
+/* import uuid from 'uuid';
+ */ import axios from 'axios';
 
 class AddContact extends Component {
 	state = {
@@ -23,8 +24,8 @@ class AddContact extends Component {
 		// Create contact from state
 		const { name, email, phone } = this.state;
 		const newContact = {
-			id: uuid(),
-			name,
+			/* 			id: uuid(),
+			 */ name,
 			email,
 			phone,
 		};
@@ -52,7 +53,9 @@ class AddContact extends Component {
 		}
 
 		// Add contact to context API
-		dispatch({ type: 'ADD_CONTACT', payload: newContact });
+		this.addContact(newContact).then(res => {
+			dispatch({ type: 'ADD_CONTACT', payload: res.data });
+		});
 
 		// Clear state to clear form
 		this.setState({
@@ -64,6 +67,15 @@ class AddContact extends Component {
 
 		// Redirect to home page
 		this.props.history.push('/');
+	};
+
+	addContact = async contactInfo => {
+		try {
+			const res = await axios.post(`https://jsonplaceholder.typicode.com/users/`, contactInfo);
+			return res;
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	render() {
