@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Consumer } from '../../context';
 import TextInputGroup from '../layout/TextInputGroup';
-/* import uuid from 'uuid';
- */ import axios from 'axios';
+import axios from 'axios';
 
 class EditContacts extends Component {
 	state = {
@@ -91,46 +89,39 @@ class EditContacts extends Component {
 		const { name, email, phone, errors } = this.state;
 
 		return (
-			<Consumer>
-				{value => {
-					const { dispatch } = value;
-					return (
-						<div className="card mb-3">
-							<div className="card-header">Edit Contact</div>
-							<div className="card-body">
-								<form onSubmit={this.handleSubmit.bind(this, dispatch)}>
-									<TextInputGroup
-										label="Name"
-										name="name"
-										placeholder="Enter Name..."
-										value={name}
-										onChange={this.handleChange}
-										error={errors.name}
-									/>
-									<TextInputGroup
-										label="Email"
-										type="email"
-										name="email"
-										placeholder="Enter Email..."
-										value={email}
-										onChange={this.handleChange}
-										error={errors.email}
-									/>
-									<TextInputGroup
-										label="Phone"
-										name="phone"
-										placeholder="Enter Phone..."
-										value={phone}
-										onChange={this.handleChange}
-										error={errors.phone}
-									/>
-									<input type="submit" value="Update Contact" className="btn btn-light btn-block" />
-								</form>
-							</div>
-						</div>
-					);
-				}}
-			</Consumer>
+			<div className="card mb-3">
+				<div className="card-header">Edit Contact</div>
+				<div className="card-body">
+					<form onSubmit={this.handleSubmit.bind(this, dispatch)}>
+						<TextInputGroup
+							label="Name"
+							name="name"
+							placeholder="Enter Name..."
+							value={name}
+							onChange={this.handleChange}
+							error={errors.name}
+						/>
+						<TextInputGroup
+							label="Email"
+							type="email"
+							name="email"
+							placeholder="Enter Email..."
+							value={email}
+							onChange={this.handleChange}
+							error={errors.email}
+						/>
+						<TextInputGroup
+							label="Phone"
+							name="phone"
+							placeholder="Enter Phone..."
+							value={phone}
+							onChange={this.handleChange}
+							error={errors.phone}
+						/>
+						<input type="submit" value="Update Contact" className="btn btn-light btn-block" />
+					</form>
+				</div>
+			</div>
 		);
 	}
 }
