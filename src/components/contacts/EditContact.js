@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
-import axios from 'axios';
+/* import axios from 'axios';
+ */
+import { connect } from 'react-redux';
+import { updateContact } from '../../actions/contactActions';
+import PropTypes from 'prop-types';
 
 class EditContacts extends Component {
 	state = {
@@ -12,7 +16,7 @@ class EditContacts extends Component {
 	};
 
 	componentDidMount = async () => {
-		const { id } = this.props.match.params;
+		/* 		const { id } = this.props.match.params;
 		const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
 		const { name, email, phone } = res.data;
 		this.setState({
@@ -20,6 +24,7 @@ class EditContacts extends Component {
 			email,
 			phone,
 		});
+ */
 	};
 
 	handleChange = event => {
@@ -28,17 +33,18 @@ class EditContacts extends Component {
 		});
 	};
 
-	handleSubmit = async (dispatch, event) => {
+	handleSubmit = async event => {
 		event.preventDefault();
 
 		// Create contact from state
 		const { name, email, phone } = this.state;
-		const updateContact = {
+		const { id } = this.props.match.params;
+		const updatedContact = {
+			id,
 			name,
 			email,
 			phone,
 		};
-		const { id } = this.props.match.params;
 
 		// Check for errors
 		if (name === '' || email === '' || phone === '') {
@@ -64,11 +70,7 @@ class EditContacts extends Component {
 
 		// Update contact in context API
 		try {
-			const res = await axios.put(
-				`https://jsonplaceholder.typicode.com/users/${id}`,
-				updateContact,
-			);
-			dispatch({ type: 'UPDATE_CONTACT', payload: res.data });
+			this.props.updateContact(updatedContact);
 		} catch (error) {
 			console.log(error);
 		}
@@ -92,7 +94,7 @@ class EditContacts extends Component {
 			<div className="card mb-3">
 				<div className="card-header">Edit Contact</div>
 				<div className="card-body">
-					<form onSubmit={this.handleSubmit.bind(this, dispatch)}>
+					<form onSubmit={this.handleSubmit}>
 						<TextInputGroup
 							label="Name"
 							name="name"
@@ -126,4 +128,11 @@ class EditContacts extends Component {
 	}
 }
 
-export default EditContacts;
+EditContacts.propTypes = {
+	updateContact: PropTypes.func.isRequired,
+};
+
+export default connect(
+	null,
+	{ updateContact },
+)(EditContacts);
