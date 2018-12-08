@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
 /* import axios from 'axios';
  */
-import uuid from 'uuid';
-import { connect } from 'react-redux';
+/* import uuid from 'uuid';
+ */ import { connect } from 'react-redux';
 import { addContact } from '../../actions/contactActions';
 import PropTypes from 'prop-types';
 
@@ -27,8 +27,8 @@ class AddContact extends Component {
 		// Create contact from state
 		const { name, email, phone } = this.state;
 		const newContact = {
-			id: uuid(),
-			name,
+			/* 			id: uuid(),
+			 */ name,
 			email,
 			phone,
 		};
@@ -56,11 +56,7 @@ class AddContact extends Component {
 		}
 
 		// Add contact to context API
-		try {
-			this.props.addContact(newContact);
-		} catch (error) {
-			console.log(error);
-		}
+		await this.props.addContact(newContact);
 
 		// Clear state to clear form
 		this.setState({

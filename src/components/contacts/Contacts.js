@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { getContacts } from '../../actions/contactActions';
 
 class Contacts extends Component {
-	componentDidMount() {
-		this.props.getContacts();
-	}
+	componentDidMount = () => {
+		if (!this.props.contacts[0]) {
+			this.props.getContacts();
+		}
+	};
 
 	render() {
 		const { contacts } = this.props;

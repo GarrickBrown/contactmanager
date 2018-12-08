@@ -3,7 +3,7 @@ import TextInputGroup from '../layout/TextInputGroup';
 /* import axios from 'axios';
  */
 import { connect } from 'react-redux';
-import { updateContact } from '../../actions/contactActions';
+import { getContact, updateContact } from '../../actions/contactActions';
 import PropTypes from 'prop-types';
 
 class EditContacts extends Component {
@@ -15,16 +15,28 @@ class EditContacts extends Component {
 		errors: {},
 	};
 
-	componentDidMount = async () => {
-		/* 		const { id } = this.props.match.params;
-		const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
-		const { name, email, phone } = res.data;
-		this.setState({
-			name,
-			email,
-			phone,
-		});
- */
+	componentWillMount = async () => {
+		const { id } = this.props.match.params;
+		const { contacts } = this.props;
+
+		if (!contacts[0]) {
+			await this.props.getContact(id);
+			console.log(this.props.contact);
+			const { name, email, phone } = this.props.contact;
+			this.setState({
+				name,
+				email,
+				phone,
+			});
+		} else {
+			const contactInfo = contacts.find(contact => contact.id.toString() === id);
+			const { name, email, phone } = contactInfo;
+			this.setState({
+				name,
+				email,
+				phone,
+			});
+		}
 	};
 
 	handleChange = event => {
@@ -69,11 +81,7 @@ class EditContacts extends Component {
 		}
 
 		// Update contact in context API
-		try {
-			this.props.updateContact(updatedContact);
-		} catch (error) {
-			console.log(error);
-		}
+		await this.props.updateContact(updatedContact);
 
 		// Clear state to clear form
 		this.setState({
@@ -130,9 +138,15 @@ class EditContacts extends Component {
 
 EditContacts.propTypes = {
 	updateContact: PropTypes.func.isRequired,
+	getContact: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+	contacts: state.contact.contacts,
+	contact: state.contact.contact,
+});
+
 export default connect(
-	null,
-	{ updateContact },
+	mapStateToProps,
+	{ getContact, updateContact },
 )(EditContacts);

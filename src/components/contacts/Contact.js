@@ -17,12 +17,8 @@ class Contact extends Component {
 		});
 	};
 
-	onDeleteClick = async id => {
-		try {
-			this.props.deleteContact(id);
-		} catch (error) {
-			console.log(error);
-		}
+	onDeleteClick = id => {
+		this.props.deleteContact(id);
 	};
 
 	render() {
